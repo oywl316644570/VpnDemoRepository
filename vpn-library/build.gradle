@@ -1,0 +1,146 @@
+/*
+ * Copyright (c) 2012-2016 Arne Schwabe
+ * Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
+ */
+
+import com.android.builder.model.ProductFlavor
+
+apply plugin: 'com.android.library'
+
+repositories {
+
+
+    jcenter()
+}
+
+dependencies {
+    implementation  'com.android.support:support-annotations:23.2.1'
+//    compile 'com.android.support:cardview-v7:23.2.1'
+//    compile 'com.android.support:recyclerview-v7:23.2.1'
+    //    compile 'ch.acra:acra:4.5.0'
+    implementation files('libs/commons-codec-1.3.jar')
+    implementation 'com.tencent:mmkv:1.0.23'
+}
+
+android {
+    compileSdkVersion 26
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 21
+        versionCode = 2
+        versionName = "0.6.51"
+    }
+    lintOptions {
+        abortOnError false
+    }
+    sourceSets {
+        main {
+            assets.srcDirs = ['src/main/assets', 'ovpnlibs/assets']
+            jniLibs.srcDirs = ['ovpnlibs/jniLibs']
+            jni.srcDirs = [] //disable automatic ndk-build
+        }
+
+//        ovpn3 {
+
+        //      }
+
+        debug {
+
+        }
+
+        release {
+
+        }
+    }
+
+    /*
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }*/
+
+//    signingConfigs {
+//        release
+//    }
+
+    lintOptions {
+        enable 'BackButton', 'EasterEgg', 'StopShip', 'IconExpectedSize', 'GradleDynamicVersion', 'NewerVersionAvailable'
+        disable 'MissingTranslation'
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+//    buildTypes {
+//        release {
+//            signingConfig signingConfigs.release
+//        }
+//    }
+
+
+//    productFlavors {
+//      //ovpn3
+//
+//      normal
+//
+//    }
+                        
+      /*                   
+      x86 {
+            versionCode Integer.parseInt("6" + defaultConfig.versionCode)
+            ndk {
+                abiFilter "x86"
+            }
+        }
+
+        mips {
+            versionCode Integer.parseInt("4" + defaultConfig.versionCode)
+            ndk {
+                abiFilter "mips"
+            }
+        }
+
+        armv7 {
+            versionCode Integer.parseInt("2" + defaultConfig.versionCode)
+            ndk {
+               abiFilter "armeabi-v7a"
+            }
+        }
+
+        arm {
+            versionCode Integer.parseInt("1" + defaultConfig.versionCode)
+            ndk {
+                abiFilter "armeabi"
+            }
+        }
+
+        fat
+        */
+
+
+
+}
+
+
+
+// ~/.gradle/gradle.properties
+if (project.hasProperty('keystoreFile') &&
+        project.hasProperty('keystorePassword') &&
+        project.hasProperty('keystoreAliasPassword')) {
+    android.signingConfigs.release.storeFile = file(keystoreFile)
+    android.signingConfigs.release.storePassword = keystorePassword
+    android.signingConfigs.release.keyPassword = keystoreAliasPassword
+    android.signingConfigs.release.keyAlias = keystoreAlias
+} else {
+    android.buildTypes.release.signingConfig = null
+}
+
+/*tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
+    pkgTask.jniFolders = new HashSet<File>()
+    pkgTask.jniFolders.add(new File(buildDir, 'native-libs'))
+}
+*/
+
